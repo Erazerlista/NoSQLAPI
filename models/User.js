@@ -17,23 +17,31 @@ const UserSchema = new Schema(
       required: 'Please enter email...',
       unique: true,
       validate: {
-      validator: validateEmail,
-      message: 'please fill in a valid email address'
-      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 
-      'Please fill a valid email address',
+        validator: validateEmail,
+        message: 'Please fill in a valid email address',
+      },
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        'Please fill a valid email address',
       ],
     },
-    thoughts: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    },
+    thoughts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Thought', 
+      },
+    ],
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User', 
+      },
+    ],
+  },
   {
-    friends: {
-      type: Schema.Types.ObjectId,
-    },
     toJSON: {
       getters: true,
-    }
+    },
     id: false,
   }
 );
