@@ -16,9 +16,12 @@ const UserSchema = new Schema(
       type: String,
       required: 'Please enter email...',
       unique: true,
-      validate: [validateEmail, 'Please fill a valid email address'],
-      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
-    }
+      validate: {
+      validator: validateEmail,
+      message: 'please fill in a valid email address'
+      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 
+      'Please fill a valid email address',
+      ],
     },
     thoughts: {
       type: Schema.Types.ObjectId,
