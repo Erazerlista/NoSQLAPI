@@ -13,7 +13,7 @@ const UserSchema = new Schema(
       trim: true,
     },
     email: {
-      type: string,
+      type: String,
       required: 'Please enter email...',
       unique: true,
       validate: [validateEmail, 'Please fill a valid email address'],
@@ -22,15 +22,17 @@ const UserSchema = new Schema(
     },
     thoughts: {
       type: Schema.Types.ObjectId,
-      ref: 'thought'
+      ref: 'User'
     },
-  },
   {
+    friends: {
+      type: Schema.Types.ObjectId,
+    },
     toJSON: {
       getters: true,
-    },
+    }
     id: false,
   }
 );
 
-module.exports = assignmentSchema;
+module.exports = UserSchema;
