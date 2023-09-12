@@ -26,3 +26,4 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 
 https://mongoosejs.com/docs/validation.html
 https://stackoverflow.com/questions/18022365/mongoose-validate-email-syntax
+Student Mini Assignment
