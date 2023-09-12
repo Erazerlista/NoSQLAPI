@@ -7,14 +7,14 @@ connection.on('error', (err) => err);
 connection.once('open', async () => {
   console.log('connected');
     // Delete the collections if they exist
-    let courseCheck = await connection.db.listCollections({ name: 'courses' }).toArray();
+    let courseCheck = await connection.db.listCollections({ name: 'thoughts' }).toArray();
     if (courseCheck.length) {
-      await connection.dropCollection('courses');
+      await connection.dropCollection('thoughts');
     }
 
-    let studentsCheck = await connection.db.listCollections({ name: 'students' }).toArray();
+    let studentsCheck = await connection.db.listCollections({ name: 'users' }).toArray();
     if (studentsCheck.length) {
-      await connection.dropCollection('students');
+      await connection.dropCollection('users');
     }
 
 
