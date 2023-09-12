@@ -1,29 +1,25 @@
-const { Schema, Types } = require('mongoose');
-
-function validateEmail(email) {
-  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return emailRegex.test(email);
-}
+const { Schema, model } = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const UserSchema = new Schema(
   {
-    assignmentId: {
-      type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId(),
-    },
     username: {
       type: String,
       unique: true,
-      required: 'Please enter username...',
+      required: 'Please enter a username...',
       trim: true,
     },
     email: {
       type: String,
-      required: 'Please enter email...',
+      required: 'Please enter an email...',
       unique: true,
       validate: {
-        validator: validateEmail, 
-        message: 'Please fill in a valid email address',
+        validator: (value) => {
+          // Use a library or a more robust email validation regex
+          const emailRegex = /^[A-Za-z0-9+_.-]+@(.+)$/;
+          return emailRegex.test(value);
+        },
+        message: 'Please provide a valid email address',
       },
     },
     thoughts: [
@@ -42,15 +38,18 @@ const UserSchema = new Schema(
   {
     toJSON: {
       getters: true,
-      virtuals: true, 
+      virtuals: true,
     },
     id: false,
   }
 );
 
-// friendcount section
+UserSchema.plugin(uniqueValidator);
+
 UserSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 });
 
-module.exports = UserSchema;
+const User = model('User', UserSchema);
+
+module.exports = User;

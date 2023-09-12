@@ -1,15 +1,15 @@
 const { ObjectId } = require('mongoose').Types;
-const { Student, Course } = require('../models');
+const { User, Course } = require('../models');
 
-// Aggregate function to get the number of students overall
+// Aggregate function to get the number of users overall
 const headCount = async () => {
-  const numberOfStudents = await Student.countDocuments();
-  return numberOfStudents;
+  const numberOfUsers = await User.countDocuments();
+  return numberOfUsers;
 }
 
 // Aggregate function for getting the overall grade using $avg
 const calculateOverallGrade = async (userId) => {
-  const result = await Student.aggregate([
+  const result = await User.aggregate([
     { $match: { _id: new ObjectId(userId) } },
     { $unwind: '$assignments' },
     {
@@ -24,35 +24,35 @@ const calculateOverallGrade = async (userId) => {
 };
 
 module.exports = {
-  // Get all students
-  async getStudents(req, res) {
+  // Get all users
+  async getUsers(req, res) {
     try {
-      const students = await Student.find();
+      const users = await User.find();
 
-      const studentsObj = {
-        students,
+      const usersObj = {
+        users,
         headCount: await headCount(),
       };
 
-      res.json(studentsObj);
+      res.json(usersObj);
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
     }
   },
-  // Get a single student
-  async getSingleStudent(req, res) {
+  // Get a single user
+  async getSingleUser(req, res) {
     try {
-      const student = await Student.findOne({ _id: req.params.studentId }).select('-__v');
+      const user = await User.findOne({ _id: req.params.userId }).select('-__v');
 
-      if (!student) {
-        return res.status(404).json({ message: 'No student with that ID' });
+      if (!user) {
+        return res.status(404).json({ message: 'No user with that ID' });
       }
 
-      const grade = await calculateOverallGrade(req.params.studentId);
+      const grade = await calculateOverallGrade(req.params.userId);
 
       res.json({
-        student,
+        user,
         grade,
       });
     } catch (err) {
@@ -60,28 +60,28 @@ module.exports = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
-  // Create a new student
-  async createStudent(req, res) {
+  // Create a new user
+  async createUser(req, res) {
     try {
-      const student = await Student.create(req.body);
-      res.status(201).json(student);
+      const user = await User.create(req.body);
+      res.status(201).json(user);
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
     }
   },
-  // Delete a student and remove them from the course
-  async deleteStudent(req, res) {
+  // Delete a user and remove them from the course
+  async deleteUser(req, res) {
     try {
-      const student = await Student.findOneAndRemove({ _id: req.params.studentId });
+      const user = await User.findOneAndRemove({ _id: req.params.userId });
 
-      if (!student) {
-        return res.status(404).json({ message: 'No such student exists' });
+      if (!user) {
+        return res.status(404).json({ message: 'No such user exists' });
       }
 
       const course = await Course.findOneAndUpdate(
-        { students: req.params.studentId },
-        { $pull: { students: req.params.studentId } },
+        { users: req.params.userId },
+        { $pull: { users: req.params.userId } },
         { new: true }
       );
 
@@ -97,39 +97,39 @@ module.exports = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
-  // Add an assignment to a student
+  // Add an assignment to a user
   async addAssignment(req, res) {
     try {
-      const student = await Student.findOneAndUpdate(
-        { _id: req.params.studentId },
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
         { $addToSet: { assignments: req.body } },
         { runValidators: true, new: true }
       );
 
-      if (!student) {
-        return res.status(404).json({ message: 'No student found with that ID' });
+      if (!user) {
+        return res.status(404).json({ message: 'No user found with that ID' });
       }
 
-      res.json(student);
+      res.json(user);
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
     }
   },
-  // Remove assignment from a student
+  // Remove assignment from a user
   async removeAssignment(req, res) {
     try {
-      const student = await Student.findOneAndUpdate(
-        { _id: req.params.studentId },
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
         { $pull: { assignments: { _id: req.params.assignmentId } } },
         { runValidators: true, new: true }
       );
 
-      if (!student) {
-        return res.status(404).json({ message: 'No student found with that ID' });
+      if (!user) {
+        return res.status(404).json({ message: 'No user found with that ID' });
       }
 
-      res.json(student);
+      res.json(user);
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
