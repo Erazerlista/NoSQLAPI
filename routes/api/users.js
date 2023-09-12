@@ -6,7 +6,7 @@ const {
   deleteUser,
   addFriend,
   removeFriend,
-} = require('../../controllers/studentController');
+} = require('../../controllers/userController');
 
 // /api/users
 router.route('/').get(getUser).post(createUser);
@@ -22,4 +22,3 @@ router.route('/:studentId/assignments/:assignmentId').delete(removeFriend);
 
 module.exports = router;
 
-//change route when control is updated!
