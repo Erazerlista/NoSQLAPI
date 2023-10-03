@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('./config/connection');
 const routes = require('./routes');
+const thoughtRoutes = require('./routes/api/thoughtRoutes');
 
 const cwd = process.cwd();
 
@@ -14,6 +15,9 @@ const activity = cwd.includes('01-Activities')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Mount your routes here
+app.use('/api/thoughts', thoughtRoutes);
 app.use(routes);
 
 db.once('open', () => {

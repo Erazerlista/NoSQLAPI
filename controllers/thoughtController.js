@@ -37,22 +37,20 @@ module.exports = {
     }
   },
   // Delete a thought
-  async deleteThought(req, res) {
-    try {
-      const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
+async deleteThought(req, res) {
+  try {
+    const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
 
-      if (!thought) {
-        return res.status(404).json({ message: 'No thought with that ID' });
-      }
-
-      // Optionally, remove the thought's reference from associated users here
-
-      res.json({ message: 'Thought deleted!' });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Internal server error' });
+    if (!thought) {
+      return res.status(404).json({ message: 'No thought with that ID' });
     }
-  },
+    res.json({ message: 'Thought deleted!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+},
+
   // Update a thought
   async updateThought(req, res) {
     try {
@@ -70,6 +68,43 @@ module.exports = {
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
+    }
+  },
+  // Add a reaction to thought
+  async createReaction(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $addToSet: { reactions: req.body } },
+        { runValidators: true, new: true }
+      );
+
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought with this id!' });
+      }
+
+      res.json(thought);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+  // Remove a reaction from thought
+  async removeReaction(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
+        { runValidators: true, new: true }
+      );
+
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought with this id!' });
+      }
+
+      res.json(thought);
+    } catch (err) {
+      res.status(500).json(err);
     }
   },
 };

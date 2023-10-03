@@ -1,21 +1,27 @@
 {
-  "name": "28-Stu_Mini-Project",
-  "version": "1.0.1",
-  "description": "Mongoose back-end project - Main",
-  "main": "index.js",
-  "license": "MIT",
+  "name": "nosql",
+  "version": "1.0.0",
+  "description": "NoSQL Module 18 Challenge",
+  "main": "server.js",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index",
-    "seed": "node utils/seed",
-    "heroku-postbuild": "node utils/seed.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
   "dependencies": {
-    "express": "^4.17.1",
-    "mongoose": "^7.0.2",
+    "express": "^4.18.2",
+    "moment": "^2.29.4",
+    "mongoose": "^7.3.1",
     "mongoose-unique-validator": "^4.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.9"
   }
 }
