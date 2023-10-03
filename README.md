@@ -20,7 +20,17 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 
 # Repo Link
 
+https://github.com/Erazerlista/NoSQLAPI
+
 # Video Link
+
+# Screenshot
+
+<img src="assets/projectsql.png" alt= "pic of code">
+
+# notes
+
+Not sure why my object is not defined when it is. Not finished.
 
 # Ref:
 
