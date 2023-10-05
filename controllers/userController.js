@@ -40,6 +40,16 @@ module.exports = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+    // Create a new user
+  async createUser(req, res) {
+    try {
+      const user = await User.create(req.body);
+      res.status(201).json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
   // Get a single user
   async getSingleUser(req, res) {
     try {
@@ -60,17 +70,27 @@ module.exports = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
-  // Create a new user
-  async createUser(req, res) {
-    try {
-      const user = await User.create(req.body);
-      res.status(201).json(user);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  },
-  // Delete a user and remove them from the course
+
+      // update user 
+    async updateUser(req, res) {
+        try {
+            const user = await User.findOneAndUpdate({ _id: req.params.userId }, {
+                $set: req.body
+            }, {
+                runValidators: true,
+                new: true
+            })
+
+            if (!user) {
+                return res.status(404).json({ message: 'No user with that ID' });
+            }
+
+            res.json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+  // Delete a user 
   async deleteUser(req, res) {
     try {
       const user = await User.findOneAndRemove({ _id: req.params.userId });
@@ -97,42 +117,40 @@ module.exports = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
-  // Add an assignment to a user
-  async addAssignment(req, res) {
+
+  // Add a friend to user
+  async addFriend(req, res) {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { assignments: req.body } },
+        { $addToSet: { friends: req.params.friendId } },
         { runValidators: true, new: true }
       );
-
       if (!user) {
-        return res.status(404).json({ message: 'No user found with that ID' });
+        return res.status(404).json({ message: 'No user with this id!' });
       }
-
       res.json(user);
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Internal server error' });
+      res.status(500).json(err);
     }
   },
-  // Remove assignment from a user
-  async removeAssignment(req, res) {
+
+  // Remove a friend from user 
+  async removeFriend(req, res) {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { assignments: { _id: req.params.assignmentId } } },
+        { $pull: { friends: req.params.friendId } },
         { runValidators: true, new: true }
       );
 
       if (!user) {
-        return res.status(404).json({ message: 'No user found with that ID' });
+        return res.status(404).json({ message: 'No user with this id!' });
       }
 
       res.json(user);
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Internal server error' });
+      res.status(500).json(err);
     }
   },
 };

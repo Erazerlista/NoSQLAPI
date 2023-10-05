@@ -1,5 +1,9 @@
 # NoSQLAPI
 
+# About
+
+Build an API for a social network web application where users can share their thoughts, react to friends’ thoughts, and create a friend list. You’ll use Express.js for routing, a MongoDB database, and the Mongoose ODM. In addition to using the Express.jsLinks to an external site. and MongooseLinks to an external site. packages, you may also optionally use a JavaScript date library of your choice or the native JavaScript Date object to format timestamps.
+
 # User Story
 
 AS A social media startup
@@ -23,6 +27,8 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 https://github.com/Erazerlista/NoSQLAPI
 
 # Video Link
+
+https://drive.google.com/file/d/1rruwYyHhJrnuqEq1WcAh-phNg-EGv7tI/view
 
 # Screenshot
 

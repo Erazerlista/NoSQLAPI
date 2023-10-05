@@ -36,22 +36,7 @@ module.exports = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
-  // Delete a thought
-async deleteThought(req, res) {
-  try {
-    const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
-
-    if (!thought) {
-      return res.status(404).json({ message: 'No thought with that ID' });
-    }
-    res.json({ message: 'Thought deleted!' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-},
-
-  // Update a thought
+    // Update a thought
   async updateThought(req, res) {
     try {
       const thought = await Thought.findOneAndUpdate(
@@ -70,6 +55,21 @@ async deleteThought(req, res) {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+  // Delete a thought
+async deleteThought(req, res) {
+  try {
+    const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
+
+    if (!thought) {
+      return res.status(404).json({ message: 'No thought with that ID' });
+    }
+    res.json({ message: 'Thought deleted!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+},
+
   // Add a reaction to thought
   async createReaction(req, res) {
     try {
@@ -90,7 +90,7 @@ async deleteThought(req, res) {
   },
 
   // Remove a reaction from thought
-  async removeReaction(req, res) {
+  async deleteReaction(req, res) {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
