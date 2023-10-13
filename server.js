@@ -17,7 +17,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Mount your routes here
-app.use('/api/thoughts', thoughtRoutes);
 app.use(routes);
 
 db.once('open', () => {

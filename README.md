@@ -28,7 +28,7 @@ https://github.com/Erazerlista/NoSQLAPI
 
 # Video Link
 
-https://drive.google.com/file/d/1rruwYyHhJrnuqEq1WcAh-phNg-EGv7tI/view
+https://drive.google.com/file/d/1cIIoy8-fCXth0RXPq_FAIpPvKx2gz_dp/view
 
 # Screenshot
 
